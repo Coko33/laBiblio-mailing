@@ -1,7 +1,27 @@
-let url = "./ElMailAMandar.html";
-var lines = await obtenerMail();
+import { auth } from "./firebase.js";
 
-async function obtenerMail() {
+function ingresar() {
+  var email = document.getElementById("email2").value;
+  var contrasena = document.getElementById("contrasena2").value;
+
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, contrasena)
+    .then((user) => {
+      // Signed in
+      // ...
+      console.log("sesión iniciada");
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+    });
+}
+
+let url = "./ElMailAMandar.html";
+var lines = obtenerMail();
+
+function obtenerMail() {
   return new Promise((resolve, reject) => {
     fetch("/ElMailAMandar.html")
       .then((response) => {
@@ -17,8 +37,6 @@ async function obtenerMail() {
       .catch((err) => reject(err));
   });
 }
-
-console.log(lines);
 
 function descargar(lines) {
   let encabezado =
